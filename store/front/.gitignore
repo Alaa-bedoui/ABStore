@@ -8,11 +8,11 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-front/pnpm-lock.yaml
+pnpm-lock.yaml
 dist
 dist-ssr
 *.local
-
+vite.config.js
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
