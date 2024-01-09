@@ -7,7 +7,7 @@ const dotenv = require('dotenv').config()
 const queryAsync = util.promisify(db.query).bind(db);
 const secretKey = process.env.SECRET_KEY;
 
-const selectAll = async function (req, res) {
+const selectAllItems = async function (req, res) {
   try {
     const items = await queryAsync("SELECT * FROM item");
     res.status(200).send(items);
@@ -15,34 +15,24 @@ const selectAll = async function (req, res) {
     res.status(500).send(err.message);
   }
 };
-const getFavByUser = async (req, res) => {
-  try {
-    const favs = await queryAsync(`
-      SELECT i.*, f.idfavourites
-      FROM favourites f
-      JOIN item i ON f.item_iditem = i.iditem
-      WHERE f.users_id = ${req.params.iduser}
-    `);
+const getFavByUser=async(req,res)=>{
 
+  try {
+    const favs = await queryAsync(`select item_iditem from users_has_item where users_token=${req.params.token}`);
     res.status(200).send(favs);
   } catch (err) {
     res.status(500).send(err.message);
   }
 }
-const addFav = async (req, res) => {
-  try {
-    const userId = req.params.iduser;
-    const itemId = req.params.iditem;
-    const result = await queryAsync(`
-      INSERT INTO store.favourites (users_id, item_iditem)
-      VALUES (${userId}, ${itemId})
-    `);
+const addFav=async(req,res)=>{
 
-    res.status(200).send(result);
+  try {
+    const favs = await queryAsync(`Insert into store.users_has_item (users_id ,item_iditem) values (${req.params.iduser},${req.params.iditem})`);
+    res.status(200).send(favs);
   } catch (err) {
     res.status(500).send(err.message);
   }
-};
+}
 
 const signUp = async (req, res) => {
   try {
@@ -142,4 +132,4 @@ const remove = async function (req, res) {
   }
 };
 
-module.exports = { selectAll, add, remove, update, selectOne, signUp, login,addFav,getFavByUser };
+module.exports = { selectAllItems, add, remove, update, selectOne, signUp, login,addFav,getFavByUser };

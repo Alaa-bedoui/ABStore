@@ -6,11 +6,21 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import Alert from "@mui/material/Alert";
-function List() {
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
+function List({iduser}) {
+  console.log(iduser);
   const navigate = useNavigate();
   const [allData, setAllData] = useState([]);
   const [reload, setReload] = useState(true);
-
+const addFav=(userId,iditem)=>{
+  axios.post(`http://localhost:8080/abStore/${userId}/${iditem}`).then((res)=>{
+    console.log(res)
+  })
+  .catch((err)=>{
+    console.error(err.message);
+  })
+}
   useEffect(() => {
     axios
       .get('http://localhost:8080/abStore/getAll')
@@ -40,11 +50,10 @@ function List() {
       .delete(`http://localhost:8080/abStore/delete/${id}`)
       .then(() => {
         setReload(!reload);
-        handleClick(); // Moved inside the .then block
+        handleClick();
       })
       .catch((error) => {
         console.log(error);
-        // Alert should be outside the .catch block
       });
   };
 
@@ -53,12 +62,15 @@ function List() {
   }
 
   if (allData.length === 0) {
-    return (
-      <Box sx={{ display: 'flex' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
+  
+       <Box sx={{ display: 'flex' }}>
+         <CircularProgress />
+        
+       </Box>
+       
+    
+   }
+  
 
   return (
     <div>
@@ -70,29 +82,37 @@ function List() {
         </Snackbar>
       </div>
       <div>
-        {allData.map((item) => (
-          <div className="item" key={item.iditem}>
-            <h3>{item?.name}</h3>
-            <p id="par">Price: {item?.price}</p>
-            <div>
-              <img src={item?.image} alt={item?.name} />
-            </div>
-            <Button
-              variant="contained"
-              style={{ display: "flex", marginLeft: "15px", width: "150px" }}
-              onClick={() => handleShowDetails(item)}
-            >
-              Show Details
-            </Button>
-            <Button
-              variant="contained"
-              style={{ display: "flex", marginLeft: "15px" }}
-              onClick={() => remove(item?.iditem)}
-            >
-              Delete
-            </Button>
-          </div>
-        ))}
+      <div className="item-container">
+  {allData.map((item) => (
+    <div className="item" key={item.iditem}>
+      <h3>{item?.name}</h3>
+      <p id="par">Price: {item?.price}</p>
+      <div>
+        <img src={item?.image} alt={item?.name} />
+      </div>
+      <div className="buttons">
+      <Button
+          variant="contained"
+          onClick={() => handleShowDetails(item)}
+        >
+          Details
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => remove(item?.iditem)}
+        >
+          Delete
+        </Button>
+        <Button variant="contained" onClick={()=>{
+          addFav(iduser,item.iditem)
+        }} >
+          <FavoriteBorderIcon />
+        </Button>
+        </div>  
+    </div>
+  ))}
+</div>
+
       </div>
     </div>
   );

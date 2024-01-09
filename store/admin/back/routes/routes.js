@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const itemController = require("../controllers/controller");
 
-router.get("/getAll", itemController.selectAll);
+router.get("/getAll", itemController.selectAllItems);
 router.get("/getOne/:id", itemController.selectOne);
 router.get("/getFav/:iduser", itemController.getFavByUser);
 router.post("/signUp",itemController.signUp)

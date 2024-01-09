@@ -4,7 +4,7 @@ import { Route, Navigate, Routes } from 'react-router-dom';
 import SignInSide from './SignIn';
 
 const PrivateRoute = ({ element: Element, isAuthenticated, ...rest }) => {
-  return isAuthenticated ?<Element />:<SignInSide></SignInSide>
+  return isAuthenticated ?<Element {...rest} />:<SignInSide></SignInSide>
 };
 
 export default PrivateRoute;

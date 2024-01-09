@@ -11,19 +11,19 @@ import {
   createTheme,
   ThemeProvider,
 } from '@mui/material';
+import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import PrivateRoute from './PrivateRoutes.jsx';
 import Home from './Home.jsx';
 import List from './List.jsx';
 import ItemDetail from './ItemDetail.jsx';
 import SignIn from './SignIn.jsx';
 import SignUp from './SignUp.jsx';
+import Favourites from './Favourites.jsx';
 
 const Navbar = () => {
+const iduser=  localStorage.getItem('iduser')
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-console.log(localStorage);
 const navigate = useNavigate();
-
-
   const signOut = () => {
     localStorage.removeItem('token');
     setIsAuthenticated(false);
@@ -53,7 +53,7 @@ const navigate = useNavigate();
                 ABStore
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Button component={Link} to="/" color="inherit" sx={{ marginRight: 2 }}>
+                <Button component={Link} to={`/home/bag/${iduser}`} color="inherit" sx={{ marginRight: 2 }}>
                   Home
                 </Button>
                   <>
@@ -63,7 +63,10 @@ const navigate = useNavigate();
                     <Button onClick={signOut} color="inherit">
                       Log Out
                     </Button>
-                  </>
+                    <Button component={Link} to={`/home/bag/${iduser}`} color="inherit">
+                    <ShoppingBagOutlinedIcon  />   
+                    </Button>
+                                 </>
               </Box>
             </Toolbar>
           </Container>}
@@ -77,7 +80,7 @@ const navigate = useNavigate();
             />
             <Route path="/SignUp" element={<SignUp />} />
             <Route
-              path="/home/*"
+              path="/home/:iduser"
               element={
                 <PrivateRoute
                   element={Home}
@@ -90,7 +93,8 @@ const navigate = useNavigate();
               path="/AllItems/*"
               element={
                 <PrivateRoute
-                  element={List}
+                element={List}
+                iduser={iduser}
                   isAuthenticated={isAuthenticated}
                   setIsAuthenticated={setIsAuthenticated}
                 />
@@ -101,6 +105,17 @@ const navigate = useNavigate();
               element={
                 <PrivateRoute
                   element={ItemDetail}
+                  isAuthenticated={isAuthenticated}
+                  setIsAuthenticated={setIsAuthenticated}
+                />
+              }
+            />
+             <Route
+              path="/home/bag/:iduser"
+              element={
+                <PrivateRoute
+                  element={Favourites}
+                  iduser={iduser}
                   isAuthenticated={isAuthenticated}
                   setIsAuthenticated={setIsAuthenticated}
                 />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import {  useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -12,40 +12,43 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
+import UserContext from './userContext.jsx';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
-
 
 function SignInSide({setIsAuthenticated}) {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [user, setUser] = useState(null);
+  const [token, settoken] = useState(null);
   const navigate = useNavigate();
-
+  const [iduser, setiduser] = useState(0)
   const login = () => {
     axios.post('http://localhost:8080/abStore/login', { email: email, password: password })
-      .then((response) => {
-        console.log('Sign in successful', response.data);
-        const token = response.data.token;
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        localStorage.setItem('token', token);
-        setUser(response.data.user); 
-        setIsAuthenticated(true);
-        navigate('/home')
-      })
-      .catch((error) => {
-        alert('Not Authorized');
-        console.error('Sign in error', error);
-      });
+    .then((response) => {
+      console.log('Sign in successful', response.data.id);
+      const token = response.data.token;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      localStorage.setItem('token', token);
+      settoken(token)
+      setiduser(response.data.id)
+      console.log("user id: " + response.data.id);
+      navigate(`/home/${response.data.id}`)
+      setIsAuthenticated(true)
+    })
+    .catch((error) => {
+      alert('Not Authorized');
+      console.error('Sign in error', error);
+    });
   };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
   
+  console.log(iduser);
+  const handleSubmit = (event) => {
+    event.preventDefault()  
   };
 
   return (
+    <UserContext.Provider value={iduser}>
+
     <ThemeProvider theme={createTheme()}>
       <Grid container component="main" sx={{ height: '100vh' }} height={'50px'} width={"600px"}>
         <CssBaseline />
@@ -151,6 +154,8 @@ function SignInSide({setIsAuthenticated}) {
         </Grid>
       </Grid>
     </ThemeProvider>
+    </UserContext.Provider>
+
   );
 }
 
