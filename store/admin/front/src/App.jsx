@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import Login from './components/Login.jsx';
 import Home from './components/Home.jsx';
+import SignUp from './components/SignUp.jsx';
 const App = () => {
  
 
@@ -38,6 +39,9 @@ const App = () => {
             <Route
               path="/auth"
               element={<Login/>}/>
+              <Route
+              path="/signUp"
+              element={<SignUp/>}/>
           </Routes>
         </Container>
       <CssBaseline />

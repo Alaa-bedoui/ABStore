@@ -15,31 +15,14 @@ const selectAllItems = async function (req, res) {
     res.status(500).send(err.message);
   }
 };
-const getFavByUser=async(req,res)=>{
 
-  try {
-    const favs = await queryAsync(`select item_iditem from users_has_item where users_token=${req.params.token}`);
-    res.status(200).send(favs);
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
-}
-const addFav=async(req,res)=>{
-
-  try {
-    const favs = await queryAsync(`Insert into store.users_has_item (users_id ,item_iditem) values (${req.params.iduser},${req.params.iditem})`);
-    res.status(200).send(favs);
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
-}
 
 const signUp = async (req, res) => {
   try {
     const { email, password, username } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const result = await queryAsync('INSERT INTO users (email, password, username) VALUES (?, ?, ?)', [email, hashedPassword, username]);
+    const result = await queryAsync('INSERT INTO admin (email, password) VALUES (?, ?)', [email, hashedPassword]);
 
     if (result instanceof Error) {
       console.error('Error executing query:', result.message);
@@ -69,7 +52,7 @@ const signUp = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const [rows] = await queryAsync('SELECT * FROM users WHERE email = ?', [email]);
+    const [rows] = await queryAsync('SELECT * FROM admin WHERE email = ?', [email]);
 
     if (!rows || rows.length === 0) {
       return res.status(401).json({ error: 'Authentication failed' });
@@ -132,4 +115,4 @@ const remove = async function (req, res) {
   }
 };
 
-module.exports = { selectAllItems, add, remove, update, selectOne, signUp, login,addFav,getFavByUser };
+module.exports = { selectAllItems, add, remove, update, selectOne, signUp, login };
