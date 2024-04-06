@@ -28,14 +28,12 @@ const signUp = async (req, res) => {
       console.error('Error executing query:', result.message);
       return res.status(500).json({ error: 'Registration failed' });
     }
-
-    const userId = result.insertId;
-
+    const userId = result.insertId
     const token = jwt.sign({ userId }, secretKey, {
       expiresIn: '1h',
     });
 
-    const updateResult = await queryAsync('UPDATE users SET token = ? WHERE id = ?', [token, userId]);
+    const updateResult = await queryAsync('UPDATE users SET token = ? WHERE idadmin = ?', [token, userId]);
 
     if (updateResult instanceof Error) {
       console.error('Error updating token:', updateResult.message);

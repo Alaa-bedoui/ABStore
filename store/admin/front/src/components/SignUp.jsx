@@ -82,7 +82,7 @@ function SignUp() {
         </div>
         <div className="form-control">
           <input
-            type="text"
+            type="password"
             required
             onChange={(e) => {
               setPassword(e.target.value);
@@ -100,7 +100,7 @@ function SignUp() {
           </label>
         </div>
       </form>
-        <button id="btn" onClick={(()=>{
+        <button id="btn" style={{color:'white'}} onClick={(()=>{
            signup()
 })}>Sign Up</button>
     </div>

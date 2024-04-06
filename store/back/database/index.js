@@ -13,6 +13,7 @@ connection.promise().connect()
     console.log("Database connected successfully");
   })
   .catch((error) => {
+    console.log(process.env.DB_USER);
     console.error("Error connecting to the database:", error);
   });
 
