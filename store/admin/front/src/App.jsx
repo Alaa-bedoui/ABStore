@@ -39,8 +39,8 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <Container sx={{ marginTop: '20px', padding: '20px' }}>
         <Routes>
-          <Route path="/" element={<Home />} /> 
-          <Route path="/auth" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />
+          <Route path="/" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} /> 
+          <Route path="/home" element={<Home/>} />
           <Route path="/signUp" element={<SignUp />} />
         </Routes>
       </Container>

@@ -10,5 +10,5 @@ router.post("/:iduser/:iditem", itemController.addFav)
 router.post("/add", itemController.add);
 router.put("/update/:id", itemController.update);
 router.delete("/delete/:id", itemController.remove);
-
+router.post('/verify-email/:token', itemController.verifyEmail)
 module.exports = router;

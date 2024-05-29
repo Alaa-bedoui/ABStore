@@ -1,56 +1,65 @@
-import React, { useState,useContext } from 'react';
-import {  useNavigate } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-// import UserContext from './userContext.jsx';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import axios from 'axios';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
 
-function SignInSide({setIsAuthenticated}) {
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [token, settoken] = useState(null);
+function SignInSide({ setIsAuthenticated }) {
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [token, setToken] = useState(null);
   const navigate = useNavigate();
-  const [iduser, setiduser] = useState(0)
+  const [idUser, setIdUser] = useState(0);
+
   const login = () => {
-    axios.post('http://localhost:8080/abStore/login', { email: email, password: password })
-    .then((response) => {
-      console.log('Sign in successful', response.data.id);
-      const token = response.data.token;
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      localStorage.setItem('token', token);
-      settoken(token)
-      setiduser(response.data.id)
-      console.log("user id: " + response.data.id);
-      navigate(`/home/${response.data.id}`)
-      setIsAuthenticated(true)
-    })
-    .catch((error) => {
-      alert('Not Authorized');
-      console.error('Sign in error', error);
-    });
+    axios
+      .post("http://localhost:8080/abStore/login", { email, password })
+      .then((response) => {
+        console.log("Sign in successful", response.data.id);
+        const token = response.data.token;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        localStorage.setItem("token", token);
+        setToken(token);
+        setIdUser(response.data.id);
+        console.log("user id: " + response.data.id);
+        navigate(`/home/${response.data.id}`);
+        setIsAuthenticated(true);
+      })
+      .catch((error) => {
+        alert("Not Authorized");
+        console.error("Sign in error", error);
+      });
   };
-  
-  console.log(iduser);
+
   const handleSubmit = (event) => {
-    event.preventDefault()  
+    event.preventDefault();
   };
 
   return (
-    // <UserContext.Provider value={iduser}>
-
     <ThemeProvider theme={createTheme()}>
-      <Grid container component="main" sx={{ height: '100vh' }} height={'50px'} width={"600px"}>
+      <Grid
+        container
+        component="main"
+        sx={{
+          height: "80vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginLeft: "-20%",
+          width: "160%",
+        }}
+      >
         <CssBaseline />
         <Grid
           item
@@ -58,14 +67,16 @@ function SignInSide({setIsAuthenticated}) {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-            backgroundRepeat: 'no-repeat',
+            backgroundImage:
+              "url(https://source.unsplash.com/random?wallpapers)",
+            backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
-          height={'510px'}
         />
         <Grid
           item
@@ -75,18 +86,23 @@ function SignInSide({setIsAuthenticated}) {
           component={Paper}
           elevation={6}
           square
-          height={'510px'}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
         >
           <Box
             sx={{
               my: 8,
               mx: 4,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -133,7 +149,7 @@ function SignInSide({setIsAuthenticated}) {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={() => login()}
+                onClick={login}
               >
                 Sign In
               </Button>
@@ -154,8 +170,6 @@ function SignInSide({setIsAuthenticated}) {
         </Grid>
       </Grid>
     </ThemeProvider>
-    // </UserContext.Provider>
-
   );
 }
 

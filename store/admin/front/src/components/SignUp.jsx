@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import {useNavigate} from "react-router-dom"
 function SignUp() {
   const [password, setPassword] = useState("")
   const [email, setEmail] = useState("")
   const [firstName, setFirstName] = useState("")
 
 
+  const navigate=useNavigate()
   const signup=()=>{
+
+
     axios.post("http://localhost:8080/abStore/signUp", { email: email, password: password})
     .then((response) => {
      console.log("Sign up successful", response.data);
@@ -101,7 +105,9 @@ function SignUp() {
         </div>
       </form>
         <button id="btn" style={{color:'white'}} onClick={(()=>{
+          
            signup()
+           navigate("/home")
 })}>Sign Up</button>
     </div>
    

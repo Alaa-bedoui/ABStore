@@ -1,50 +1,39 @@
-import  React,{useState} from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import axios from 'axios';
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import React, { useState } from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const [password, setPassword] = useState("")
-  const [email, setEmail] = useState("")
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const navigate = useNavigate();
 
-
-  const signup=()=>{
-    axios.post("http://localhost:8080/abStore/signUp", { email: email, password: password,username:firstName})
-    .then((response) => {
-     console.log("Sign up successful", response.data);
-    })
-    .catch((error) => {
-     console.error("Sign up error", error);
-    });
+  const signup = () => {
+    axios.post("http://localhost:8080/abStore/signUp", { email, password, username: firstName })
+      .then((response) => {
+        console.log("Sign up successful", response.data);
+        navigate("/home");
+      })
+      .catch((error) => {
+        console.error("Sign up error", error);
+      });
   }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -56,14 +45,18 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" sx={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center',marginLeft:"50%",width:"50%"}}>
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            padding: 3,
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            backdropFilter: 'blur(5px)',
+            borderRadius: '10px',
+            boxShadow: 3
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -83,9 +76,10 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
-                  onChange={(e)=>{
+                  onChange={(e) => {
                     setFirstName(e.target.value);
-              }}  />
+                  }}
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -95,9 +89,10 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-                  onChange={(e)=>{
+                  onChange={(e) => {
                     setLastName(e.target.value);
-              }} />
+                  }}
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -107,9 +102,10 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
-                  onChange={(e)=>{
+                  onChange={(e) => {
                     setEmail(e.target.value);
-              }}  />
+                  }}
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -120,11 +116,10 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  onChange={(e)=>{
+                  onChange={(e) => {
                     setPassword(e.target.value);
-              }}  />
-              </Grid>
-              <Grid item xs={12}>
+                  }}
+                />
               </Grid>
             </Grid>
             <Button
@@ -132,21 +127,19 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-            onClick={()=>{
-              signup()
-            }}>
+              onClick={signup}
+            >
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/" variant="body2">
+                <Link href="/verifyEmail" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );

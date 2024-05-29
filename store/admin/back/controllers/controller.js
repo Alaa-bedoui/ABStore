@@ -16,27 +16,19 @@ const selectAllItems = async function (req, res) {
   }
 };
 
-
 const signUp = async (req, res) => {
   try {
     const { email, password, username } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const result = await queryAsync('INSERT INTO admin (email, password) VALUES (?, ?)', [email, hashedPassword]);
-
-    if (result instanceof Error) {
-      console.error('Error executing query:', result.message);
-      return res.status(500).json({ error: 'Registration failed' });
-    }
-    const userId = result.insertId
-    const token = jwt.sign({ userId }, secretKey, {
+    const token = jwt.sign({ email, username }, secretKey, {
       expiresIn: '1h',
     });
 
-    const updateResult = await queryAsync('UPDATE users SET token = ? WHERE idadmin = ?', [token, userId]);
+    const result = await queryAsync('INSERT INTO admin (email, password, token) VALUES (?, ?, ?)', [email, hashedPassword, token]);
 
-    if (updateResult instanceof Error) {
-      console.error('Error updating token:', updateResult.message);
+    if (result instanceof Error) {
+      console.error('Error executing query:', result.message);
       return res.status(500).json({ error: 'Registration failed' });
     }
 
@@ -46,6 +38,7 @@ const signUp = async (req, res) => {
     res.status(500).json({ error: 'Registration failed' });
   }
 };
+
 
 const login = async (req, res) => {
   try {

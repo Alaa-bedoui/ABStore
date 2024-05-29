@@ -34,20 +34,19 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(300px, 1fr));
   gap: 20px;
-  width: 60%; 
-  height: 60%; 
+  width: 60%;
+  height: 60%;
 }
-
 
 .buttons {
   display: flex;
-  gap: 10px; 
+  gap: 10px;
 }
 
 .buttons button {
   margin-top: 10px;
   flex: 1;
-  max-width: 100px; 
+  max-width: 100px;
 }
 
 .glitch {
@@ -78,69 +77,10 @@
 }
 
 .glitch:after {
-  animation: glitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+  animation: glitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both
+    infinite;
   color: #00e571;
   z-index: -2;
-}
-
-@keyframes glitch {
-  0% {
-    transform: translate(0);
-  }
-
-  20% {
-    transform: translate(-3px, 3px);
-  }
-
-  40% {
-    transform: translate(-3px, -3px);
-  }
-
-  60% {
-    transform: translate(3px, 3px);
-  }
-
-  80% {
-    transform: translate(3px, -3px);
-  }
-
-  to {
-    transform: translate(0);
-  }
-}
-
-@keyframes shift {
-  0%, 40%, 44%, 58%, 61%, 65%, 69%, 73%, 100% {
-    transform: skewX(0deg);
-  }
-
-  41% {
-    transform: skewX(10deg);
-  }
-
-  42% {
-    transform: skewX(-10deg);
-  }
-
-  59% {
-    transform: skewX(40deg) skewY(10deg);
-  }
-
-  60% {
-    transform: skewX(-40deg) skewY(-10deg);
-  }
-
-  63% {
-    transform: skewX(10deg) skewY(-5deg);
-  }
-
-  70% {
-    transform: skewX(-50deg) skewY(-20deg);
-  }
-
-  71% {
-    transform: skewX(10deg) skewY(-10deg);
-  }
 }
 
 .item {
@@ -150,9 +90,9 @@
 }
 
 .item img {
-  width: 100%; 
-  height: 100%; 
-  object-fit: cover; 
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .button-container {
@@ -166,26 +106,9 @@
   justify-content: space-between;
   margin-top: 15px;
 }
-#par{
+#par {
   color: grey;
 }
 
-body {
-  background-image: url("https://img2.wallspic.com/crops/2/5/4/9/6/169452/169452-neon_water-water-light-earth-neon_lighting-2560x1440.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  animation: changeBackground 5s infinite alternate; 
-}
 
-@keyframes changeBackground {
-  0% {
-    background-image: url("./assets/depositphotos_507343692-stock-photo-render-abstract-pink-blue-neon.jpg");
-  }
-  50% {
-    background-image: url("./assets/istockphoto-1276580714-612x612.jpg");
-  }
-  100% {
-    background-image: url("./assets/photo-1511447333015-45b65e60f6d5.avif");
-  }
-}
+
