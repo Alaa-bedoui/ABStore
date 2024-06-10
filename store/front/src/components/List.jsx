@@ -13,8 +13,8 @@ function List({iduser}) {
   const navigate = useNavigate();
   const [allData, setAllData] = useState([]);
   const [reload, setReload] = useState(true);
-const addFav=(userId,iditem)=>{
-  axios.post(`http://localhost:8080/abStore/${userId}/${iditem}`).then((res)=>{
+const addFav=(iditem)=>{
+  axios.post(`https://stoore-ten.vercel.app/${iduser}/${iditem}`).then((res)=>{
     console.log(res)
   })
   .catch((err)=>{
@@ -86,7 +86,7 @@ const addFav=(userId,iditem)=>{
   {allData.map((item) => (
     <div className="item" key={item.iditem}>
       <h3>{item?.name}</h3>
-      <p id="par">Price: {item?.price}</p>
+      <p id="par">Price: {item?.price} DT</p>
       <div>
         <img src={item?.image} alt={item?.name} />
       </div>
@@ -104,7 +104,7 @@ const addFav=(userId,iditem)=>{
           Delete
         </Button>
         <Button variant="contained" onClick={()=>{
-          addFav(iduser,item.iditem)
+          addFav(item.iditem)
         }} >
           <FavoriteBorderIcon />
         </Button>
