@@ -16,7 +16,7 @@ function List({ iduser }) {
       .then((res) => {
         console.log(res);
         setSnackbarMessage('Item added to favorites');
-        setOpen(true);
+        setOpen(!open);
       })
       .catch((err) => {
         console.error(err.message);

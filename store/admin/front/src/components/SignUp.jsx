@@ -9,7 +9,7 @@ function SignUp() {
   const navigate = useNavigate();
   const signup = () => {
     axios
-      .post("http://localhost:8080/abStore/signUp", {
+      .post("http://4sm.h.filess.io:3307/abStore/signUp", {
         email: email,
         password: password,
       })
