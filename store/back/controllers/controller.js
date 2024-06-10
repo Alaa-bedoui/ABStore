@@ -44,7 +44,6 @@ const addFav = async (req, res) => {
 };
 
 const signUp = async (req, res) => {
-  console.log("email", process.env.USER, "pw", process.env.PASSMAIL);
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -74,20 +73,48 @@ const signUp = async (req, res) => {
       from: "abstoreeeee@gmail.com",
       to: email,
       subject: "Email Verification",
-      html: ` <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Email Verification</title>
-    </head>
-    <body>
-      <h1>Welcome to ABStore</h1>
-      <p>Please verify your email by clicking the link below:</p>
-      <a href="http://localhost:5173/verify">Verify Email</a>
-    </body>
-    </html>`,
+      html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Confirmation Email</title>
+      </head>
+      <body>
+          <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
+              <h1 style="color: #333; margin-bottom: 20px;">Verification Email</h1>
+              <p style="margin-bottom: 20px; color: #555;">Dear ${username},</p>
+              <p style="margin-bottom: 20px; color: #555;">Verify your email by clicking the button below:</p>
+              <button onclick="verifyEmail()" style="padding: 10px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 10px; cursor: pointer;">Verify</button>
+              <p style="margin-top: 20px; color: #777;">Best regards,<br>ABStore</p>
+          </div>
+          <script>
+            function verifyEmail() {
+              fetch('http://localhost:3000/verify/${verificationToken}', { method: 'GET' })
+                .then(response => {console.log(response),response.json()})
+                .then(data => {
+                  console.log(data)
+                  if (data.message) {
+                    alert(data.message);
+                  } else {
+                    alert('Verification failed. Please try again.');
+                  }
+                })
+                .catch(error => {
+                  console.error('Error:', error);
+                  alert('Verification failed. Please try again.');
+                });
+            }
+          </script>
+      </body>
+      </html>`,
     };
+
+    res.status(200).json({
+      message:
+        "Registration successful. Please check your email to verify your account.",
+    });
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
@@ -95,11 +122,6 @@ const signUp = async (req, res) => {
       } else {
         console.log("Verification email sent:", info.response);
       }
-    });
-
-    res.status(200).json({
-      message:
-        "Registration successful. Please check your email to verify your account.",
     });
   } catch (error) {
     console.error(error);

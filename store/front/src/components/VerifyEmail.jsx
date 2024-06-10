@@ -29,20 +29,21 @@ const VerifyEmail = () => {
   }, [location, navigate]);
   const handleVerifyClick = () => {
     const token = localStorage.getItem("token");
-  
+
     // Make an API call to your backend to initiate the email verification process
     axios
       .post(`http://localhost:8080/abStore/verify-email`, { token })
       .then((response) => {
         console.log(response.data);
-        alert("Verification initiated. Please check your email for further instructions.");
+        alert(
+          "Verification initiated. Please check your email for further instructions."
+        );
       })
       .catch((error) => {
         console.error(error);
         alert("Failed to initiate verification process: " + error);
       });
   };
-  
 
   return (
     <div>
